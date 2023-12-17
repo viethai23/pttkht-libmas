@@ -20,7 +20,7 @@ public class Return {
     @Column(name = "id")
     private int id;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "borrow_id")
     private Borrow borrow;
 

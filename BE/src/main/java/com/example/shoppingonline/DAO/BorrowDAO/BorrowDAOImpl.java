@@ -41,11 +41,11 @@ public class BorrowDAOImpl implements BorrowDAO {
 		borrow.setDue(resultDate);
 		Cart cart = cartRepository.findById(borrow.getCart().getId()).orElse(null);
 		if(cart != null) {
-			cart.setStatus("borrowed");
+			cart.setStatus("borrow");
 			cartRepository.save(cart);
 		}
 		borrow.setTotalAmount(borrow.getPayment().getAmount());
-		borrow.setStatus("borrowed");
+		borrow.setStatus("borrow");
 		return borrowRepository.save(borrow);
 	}
 

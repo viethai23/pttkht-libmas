@@ -19,8 +19,9 @@ public class ReturnDAOImpl implements ReturnDAO{
     @Override
     public Return confirmReturn(Return returnn) {
         LocalDateTime localDateTime = LocalDateTime.now();
-        Date curentTime = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-        returnn.setReturnDate(curentTime);
+        Date currentTime = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        returnn.setReturnDate(currentTime);
+        returnn.getBorrow().setStatus("return");
         return returnRepository.save(returnn);
     }
 
