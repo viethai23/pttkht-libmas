@@ -24,7 +24,7 @@ public class PaymentController {
 
     @PostMapping("/calculateBorrowCost")
     public PaymentResponse calculateBorrowCost(@RequestBody PaymentCalculate paymentCalculate) {
-        return paymentDAO.calculateBorrowCost(paymentCalculate.getShipping(), paymentCalculate.getPayment());
+        return paymentDAO.calculateBorrowCost(paymentCalculate.getShipping(), paymentCalculate.getCart(), paymentCalculate.getPayment());
     }
 
     @PostMapping("/calculateReturnCost")
@@ -44,4 +44,5 @@ class PaymentCalculate {
     private Shipping shipping;
     private Payment payment;
     private Fine fine;
+    private Cart cart;
 }

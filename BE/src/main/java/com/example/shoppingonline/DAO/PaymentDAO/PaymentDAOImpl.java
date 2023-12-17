@@ -23,9 +23,9 @@ public class PaymentDAOImpl implements PaymentDAO {
 	}
 
 	@Override
-	public PaymentResponse calculateBorrowCost(Shipping sh, Payment p) {
+	public PaymentResponse calculateBorrowCost(Shipping sh, Cart cart, Payment p) {
 		p.setStatus("borrow");
-		p.setAmount(sh.getAmount());
+		p.setAmount(cart.getTotal() + sh.getAmount());
 		PaymentResponse pm = new PaymentResponse();
 		pm.setAmount(p.getAmount());
 		pm.setPaymentMethod(p.getPaymentMethod());

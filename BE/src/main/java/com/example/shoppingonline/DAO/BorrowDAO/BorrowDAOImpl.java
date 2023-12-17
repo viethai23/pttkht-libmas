@@ -44,6 +44,7 @@ public class BorrowDAOImpl implements BorrowDAO {
 			cart.setStatus("borrowed");
 			cartRepository.save(cart);
 		}
+		borrow.setTotalAmount(borrow.getPayment().getAmount());
 		borrow.setStatus("borrowed");
 		return borrowRepository.save(borrow);
 	}

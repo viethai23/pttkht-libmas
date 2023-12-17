@@ -47,6 +47,9 @@ public class Borrow {
 	@Column(name = "due")
 	private Date due;
 
+	@Column(name = "total_amount")
+	private double totalAmount;
+
 	@Column(name = "status")
 	private String status;
 }

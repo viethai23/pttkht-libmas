@@ -1,5 +1,6 @@
 package com.example.shoppingonline.DAO.CartDAO;
 
+import com.example.shoppingonline.Model.Book.Book;
 import com.example.shoppingonline.Model.Borrow.Cart;
 import com.example.shoppingonline.Model.Borrow.Item;
 
@@ -26,6 +27,7 @@ public class CartDAOImpl implements CartDAO {
 		Cart cart = getCartById(cartId);
 		if (cart != null) {
 			cart.getItems().clear();
+			cart.setTotal(0);
 			cart.setTotalItem(0);
 			cartRepository.save(cart);
 			return cart;
@@ -39,8 +41,19 @@ public class CartDAOImpl implements CartDAO {
 		Item itemExist = itemRepository.findByBook_IdAndCart_Id(item.getBook().getId(), cartId);
 
 		if (cart != null && itemExist == null) {
+			Book book = item.getBook();
+			int quantity = item.getQuantity();
+			if(quantity > book.getStockQuantity() || quantity < 0) {
+				return null;
+			}
+			double itemAmount = book.getFee() * quantity;
+
+			item.setCart(cart);
+			item.setAmount(itemAmount);
+
 			cart.getItems().add(item);
-			cart.setTotalItem(cart.getTotalItem() + item.getQuantity());
+			cart.setTotalItem(cart.getTotalItem() + 1);
+			cart.setTotal(cart.getTotal() + itemAmount);
 			return cartRepository.save(cart);
 		}
 		else {
@@ -61,8 +74,11 @@ public class CartDAOImpl implements CartDAO {
 
 			if (itemToRemove != null) {
 
+				double itemAmount = itemToRemove.getAmount();
+
 				cart.getItems().remove(itemToRemove);
-				cart.setTotalItem(cart.getTotalItem() - itemToRemove.getQuantity());
+				cart.setTotalItem(cart.getTotalItem() - 1);
+				cart.setTotal(cart.getTotal() - itemAmount);
 				cartRepository.save(cart);
 			}
 		}
@@ -90,8 +106,17 @@ public class CartDAOImpl implements CartDAO {
 					.orElse(null);
 
 			if (itemToUpdate != null) {
-				cart.setTotalItem(cart.getTotalItem() + (quantity - itemToUpdate.getQuantity()));
+				double originalItemAmount = itemToUpdate.getAmount();
+
+				if(quantity > itemToUpdate.getBook().getStockQuantity() || quantity < 0) {
+					return null;
+				}
+
 				itemToUpdate.setQuantity(quantity);
+				itemToUpdate.setAmount(itemToUpdate.getBook().getFee() * quantity);
+
+				double newItemAmount = itemToUpdate.getAmount();
+				cart.setTotal(cart.getTotal() - originalItemAmount + newItemAmount);
 
 				cartRepository.save(cart);
 			}

@@ -37,6 +37,9 @@ public class Book {
 	@Column(name = "des")
 	private String des;
 
+	@Column(name = "fee")
+	private float fee;
+
 	@Column(name = "stock_quantity")
 	private int stockQuantity;
 

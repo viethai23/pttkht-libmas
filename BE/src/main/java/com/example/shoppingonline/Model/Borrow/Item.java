@@ -31,4 +31,7 @@ public class Item {
 
 	@Column(name = "quantity")
 	private int quantity;
+
+	@Column(name = "amount")
+	private double amount;
 }

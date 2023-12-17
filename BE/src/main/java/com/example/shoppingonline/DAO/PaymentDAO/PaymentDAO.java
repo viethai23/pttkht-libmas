@@ -8,7 +8,7 @@ import com.example.shoppingonline.Model.Borrow.Shipping;
 
 public interface PaymentDAO {
 
-	PaymentResponse calculateBorrowCost(Shipping sh, Payment p);
+	PaymentResponse calculateBorrowCost(Shipping sh, Cart cart, Payment p);
 
 	PaymentResponse calculateReturnCost(Shipping sh, Fine fine, Payment p);
 
